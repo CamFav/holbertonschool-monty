@@ -38,13 +38,14 @@ typedef struct instruction_s
 
 extern char *value;
 
-FILE *read_file(char *path);
 void tokenize_line(char *line, char **op, char **value);
 void (*get_op_func(char *op))(stack_t **, unsigned int);
 stack_t *create_node();
 int isnumber();
 
 // WE NEED TO IMPLEMENT
+void _free_list(stack_t **head);
+FILE *read_file(int argc, char **argv);
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
 
