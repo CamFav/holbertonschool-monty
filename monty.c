@@ -114,6 +114,8 @@ void pop(stack_t **stack, unsigned int line_number)
 
 /**
  * nop - doesn't do anything
+ * @stack: linked list
+ * @line_number: line number
  * 
  * Return: Nothing.
 */
@@ -121,5 +123,17 @@ void nop(stack_t **stack, unsigned int line_number)
 {
 	(void)stack;
 	(void)line_number;
-	return 0;
+	sleep (1);
+}
+
+/**
+ * swap - swaps the top two elements of the stack
+ * @stack: linked list
+ * @line_number: line number
+ * 
+ * Return: Nothing.
+*/
+void swap(stack_t **stack, unsigned int line_number)
+{
+    
 }
