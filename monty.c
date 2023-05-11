@@ -1,5 +1,20 @@
 #include "monty.h"
 
+int isnumber(char *data)
+{
+    int i = 0;
+
+    if (data == NULL)
+        return (0);
+
+    while (data[i])
+    {
+        if (!isdigit(data[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
 /**
  * push - adding element to stack
  * @stack: linked list
@@ -7,10 +22,28 @@
  *
  * Return: Nothing.
  */
-void push(stack_t** stack, unsigned int line_number)
+void push(stack_t **stack, unsigned int line_number)
 {
-    /* Implementation of push opcode */
-    /* Add logic to push a new element onto the stack */
+    stack_t *newNode;
+    (void)line_number;
+
+    newNode = create_node();
+
+    if (newNode == NULL)
+    {
+        fprintf(stderr, "L%d: usage: push integer\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    if (stack && *stack)
+    {
+        (*stack)->prev = newNode;
+        newNode->next = *stack;
+        *stack = newNode;
+        return;
+    }
+
+    *stack = newNode;
 }
 
 /**
@@ -18,10 +51,23 @@ void push(stack_t** stack, unsigned int line_number)
  * @stack: the header
  * @line_number: for the error
  */
-void pall(stack_t** stack, unsigned int line_number)
+void pall(stack_t **stack, unsigned int line_number)
 {
+    (void)line_number;
+
+    stack_t *head = *stack;
     /* Implementation of pall opcode */
-    /* Add logic to print all elements of the stack */
+    while (stack && *stack)
+    {
+        printf("%d\n", (*stack)->n);
+        *stack = (*stack)->next;
+    }
+
+    if (stack != NULL)
+    {
+        *stack = head;
+    }
+    /* Print all elements of the stack */
 }
 
 /**
@@ -29,58 +75,13 @@ void pall(stack_t** stack, unsigned int line_number)
  * @stack: the header
  * @line_number: still don't know
  */
-void pint(stack_t** stack, unsigned int line_number)
+void pint(stack_t **stack, unsigned int line_number)
 {
-    /* Implementation of pint opcode */
-    /* Add logic to print the value at the top of the stack */
-}
-
-/**
- * pop - removes first element of stack
- * @stack: linked list
- * @line_number: line number
- *
- * Return: Nothing.
- */
-void pop(stack_t** stack, unsigned int line_number)
-{
-    /* Implementation of pop opcode */
-    /* Add logic to remove the top element from the stack */
-}
-
-/**
- * swap - swaps the top two elements of the stack.
- * @stack: linked list
- * @line_number: line number
- *
- * Return: Nothing.
- */
-void swap(stack_t** stack, unsigned int line_number)
-{
-    /* Implementation of swap opcode */
-    /* Add logic to swap the top two elements of the stack */
-}
-
-/**
- * add - additionne deux noeuds
- * @stack: le header
- * @line_number: la ligne où on est
- */
-void add(stack_t** stack, unsigned int line_number)
-{
-    /* Implementation of add opcode */
-    /* Add logic to add the top two elements of the stack */
-}
-
-/**
- * nop - desc
- * @stack: linked list
- * @line_number: line number
- *
- * Return: Nothing.
- */
-void nop(stack_t** stack, unsigned int line_number)
-{
-    /* Implementation of nop opcode */
-    /* Add logic for the no operation (nop) opcode */
+    if (!*stack)
+    {
+        fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+    printf("%d", (*stack)->n);
+    /* Print the value at the top of the stack */
 }
