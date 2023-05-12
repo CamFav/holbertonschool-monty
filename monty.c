@@ -1,156 +1,80 @@
 #include "monty.h"
+/**
+ * read_file - open a file
+ * @argc: number of program args
+ * @argv: program args
+ * Return: the file on succes, exit 1 else
+ */
+FILE *read_file(int argc, char **argv)
+{
+	FILE *file;
 
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+
+	file = fopen(argv[1], "r");
+	if (file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+
+	return (file);
+}
+
+/**
+ * tokenize_line - tokenize a string using strtok
+ * @line:the string to tokenize
+ * @op: the first token
+ * @value: the second token
+ */
+void tokenize_line(char *line, char **op, char **value)
+{
+	*op = strtok(line, " $\n\t");
+	*value = strtok(NULL, " $\n\t");
+}
+
+/**
+ * isnumber - check if a string contains only digits and signs
+ * @data: the number to check
+ * Return: 1 if data contains only number, 0 else
+ */
 int isnumber(char *data)
 {
-    int i = 0;
+	int i = 0;
 
-    if (data == NULL)
-        return (0);
+	if (data == NULL)
+		return (0);
 
-    if (data[0] == '-')
-        i++;
+	if (data[0] == '-')
+		i++;
 
-    while (data[i])
-    {
-
-        if (!isdigit(data[i]))
-            return (0);
-        i++;
-    }
-    return (1);
-}
-/**
- * push - adding element to stack
- * @stack: linked list
- * @line_number: line number
- *
- * Return: Nothing.
- */
-void push(stack_t **stack, unsigned int line_number)
-{
-    stack_t *newNode;
-    (void)line_number;
-
-    newNode = create_node();
-
-    if (newNode == NULL)
-    {
-        fprintf(stderr, "L%d: usage: push integer\n", line_number);
-        EXIT_STATUS = EXIT_FAILURE;
-        return;
-    }
-
-    if (stack && *stack)
-    {
-        (*stack)->prev = newNode;
-        newNode->next = *stack;
-        *stack = newNode;
-        return;
-    }
-
-    *stack = newNode;
+	while (data[i])
+	{
+		if (!isdigit(data[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /**
- * pall - print from the start node
- * @stack: the header
- * @line_number: for the error
+ * _free_list - free a doubly linked list of stack_t type
+ * @head: the head of the stack to free
  */
-void pall(stack_t **stack, unsigned int line_number)
+void _free_list(stack_t **head)
 {
-    (void)line_number;
+	stack_t *tmp;
 
-    stack_t *head = *stack;
-    /* Implementation of pall opcode */
-    while (stack && *stack)
-    {
-        printf("%d\n", (*stack)->n);
-        *stack = (*stack)->next;
-    }
-
-    if (stack != NULL)
-    {
-        *stack = head;
-    }
-    /* Print all elements of the stack */
-}
-
-/**
- * pint - print int in top of stack
- * @stack: the header
- * @line_number: still don't know
- */
-void pint(stack_t **stack, unsigned int line_number)
-{
-    if (!*stack)
-    {
-        fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
-        EXIT_STATUS = EXIT_FAILURE;
-        return;
-    }
-    printf("%d\n", (*stack)->n);
-    /* Print the value at the top of the stack */
-}
-
-/**
- * pop - removes first element of stack
- * @stack: linked list
- * @line_number: line number
- *
- * Return: Nothing.
- */
-void pop(stack_t **stack, unsigned int line_number)
-{
-    stack_t *topNode = NULL;
-    /* Implementation of pop opcode */
-    if (!*stack)
-    {
-        fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
-        EXIT_STATUS = EXIT_FAILURE;
-        return;
-    }
-    topNode = (*stack);
-
-    if (*stack)
-        (*stack)->prev = NULL;
-
-    *stack = (*stack)->next;
-    free(topNode);
-    /* Add logic to remove the top element from the stack */
-}
-
-void nop(stack_t **stack, unsigned int line_number)
-{
-    (void)stack;
-    (void)line_number;
-    return;
-}
-
-void swap(stack_t **stack, unsigned int line_number)
-{
-    int tmp;
-
-    if (!stack || !(*stack) || !(*stack)->next)
-    {
-        fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
-        EXIT_STATUS = EXIT_FAILURE;
-        return;
-    }
-
-    tmp = (*stack)->n;
-    (*stack)->n = (*stack)->next->n;
-    (*stack)->next->n = tmp;
-}
-
-void add(stack_t **stack, unsigned int line_number)
-{
-    if (!stack || !(*stack) || !(*stack)->next)
-    {
-        fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-        EXIT_STATUS = EXIT_FAILURE;
-        return;
-    }
-
-    (*stack)->next->n += (*stack)->n;
-    pop(stack, line_number);
+	while (*head)
+	{
+		tmp = *head;
+		(*head) = (*head)->next;
+		free(tmp);
+		tmp = NULL;
+	}
+	head = NULL;
 }
