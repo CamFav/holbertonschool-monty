@@ -1,6 +1,7 @@
 #include "monty.h"
 char *value;
 int EXIT_STATUS;
+
 /**
  * main - Entry point
  * @argc: The number of command-line arguments
