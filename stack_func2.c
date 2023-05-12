@@ -59,11 +59,11 @@ void swap(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * add - add the data of the 2 first node of the stack, delete one
+ * _add - add the data of the 2 first node of the stack, delete one
  * @stack: point the head of the stack
  * @line_number: the number of the line of the file we read
  */
-void add(stack_t **stack, unsigned int line_number)
+void _add(stack_t **stack, unsigned int line_number)
 {
 	if (!stack || !(*stack) || !(*stack)->next)
 	{
