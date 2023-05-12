@@ -38,7 +38,11 @@ void (*get_op_func(char *op, int line_count))(stack_t **, unsigned int)
 		{"pint", pint},
 		{"pop", pop},
 		{"swap", swap},
-		{"add", add},
+		{"add", _add},
+		{"mul", _mul},
+		{"sub", _sub},
+		{"div", _div},
+		{"mod", _mod},
 		{"nop", nop},
 		{0, NULL},
 	};
