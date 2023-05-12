@@ -1,7 +1,6 @@
 
 #include "monty.h"
 
-
 FILE *read_file(int argc, char **argv)
 {
     FILE *file;
@@ -21,8 +20,9 @@ FILE *read_file(int argc, char **argv)
 
     return file;
 }
+
 void tokenize_line(char *line, char **op, char **value)
 {
-    *op = strtok(strdup(line), " $\n\t");
+    *op = strtok(line, " $\n\t");
     *value = strtok(NULL, " $\n\t");
 }

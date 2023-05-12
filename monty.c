@@ -7,8 +7,12 @@ int isnumber(char *data)
     if (data == NULL)
         return (0);
 
+    if (data[0] == '-')
+        i++;
+
     while (data[i])
     {
+
         if (!isdigit(data[i]))
             return (0);
         i++;
@@ -32,7 +36,8 @@ void push(stack_t **stack, unsigned int line_number)
     if (newNode == NULL)
     {
         fprintf(stderr, "L%d: usage: push integer\n", line_number);
-        exit(EXIT_FAILURE);
+        EXIT_STATUS = EXIT_FAILURE;
+        return;
     }
 
     if (stack && *stack)
@@ -80,9 +85,10 @@ void pint(stack_t **stack, unsigned int line_number)
     if (!*stack)
     {
         fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
-        exit(EXIT_FAILURE);
+        EXIT_STATUS = EXIT_FAILURE;
+        return;
     }
-    printf("%d", (*stack)->n);
+    printf("%d\n", (*stack)->n);
     /* Print the value at the top of the stack */
 }
 
@@ -99,8 +105,9 @@ void pop(stack_t **stack, unsigned int line_number)
     /* Implementation of pop opcode */
     if (!*stack)
     {
-        fprintf(stderr, "L<%d>: can't pop an empty stack\n", line_number);
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+        EXIT_STATUS = EXIT_FAILURE;
+        return;
     }
     topNode = (*stack);
 
@@ -112,50 +119,38 @@ void pop(stack_t **stack, unsigned int line_number)
     /* Add logic to remove the top element from the stack */
 }
 
-/**
- * nop - doesn't do anything
- * @stack: linked list
- * @line_number: line number
- * 
- * Return: Nothing.
-*/
 void nop(stack_t **stack, unsigned int line_number)
 {
-	(void)stack;
-	(void)line_number;
-	sleep (1);
+    (void)stack;
+    (void)line_number;
+    return;
 }
 
-/**
- * swap - swaps the top two elements of the stack
- * @stack: linked list
- * @line_number: line number
- * 
- * Return: Nothing.
-*/
 void swap(stack_t **stack, unsigned int line_number)
 {
-    if (*stack == NULL || ((*stack)->next) == NULL)
-	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-		return;
-	}
+    int tmp;
+
+    if (!stack || !(*stack) || !(*stack)->next)
+    {
+        fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+        EXIT_STATUS = EXIT_FAILURE;
+        return;
+    }
+
+    tmp = (*stack)->n;
+    (*stack)->n = (*stack)->next->n;
+    (*stack)->next->n = tmp;
 }
 
-/**
- * add - add the top two elements of the stack
- * @stack: linked list
- * @line_number: line number
- * 
- * Return: Nothing.
-*/
 void add(stack_t **stack, unsigned int line_number)
 {
-    if (*stack == NULL || ((*stack)->next) == NULL)
-	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-		return;
-	}
+    if (!stack || !(*stack) || !(*stack)->next)
+    {
+        fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+        EXIT_STATUS = EXIT_FAILURE;
+        return;
+    }
+
+    (*stack)->next->n += (*stack)->n;
+    pop(stack, line_number);
 }
