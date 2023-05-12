@@ -45,16 +45,16 @@ void tokenize_line(char *line, char **op, char **value);
 void (*get_op_func(char *op, int line_count))(stack_t **, unsigned int);
 stack_t *create_node();
 int isnumber();
-
-// WE NEED TO IMPLEMENT
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
-
-// LATER IMPLEMENTATION
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
-void add(stack_t **stack, unsigned int line_number);
+void _add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
+void _mod(stack_t **stack, unsigned int line_number);
+void _div(stack_t **stack, unsigned int line_number);
+void _sub(stack_t **stack, unsigned int line_number);
+void _mul(stack_t **stack, unsigned int line_number);
 
 #endif
